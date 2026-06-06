@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hygge Cafe — Cozy vibes, great coffee</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0f0f;
+    --surface: #1a1a1a;
+    --text: #f0f0f0;
+    --muted: #888;
+    --accent: #c8a97e;
+    --accent-hover: #d4b88f;
+    --border: #2a2a2a;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+  h1, h2, h3 { font-family: 'Playfair Display', serif; }
+
+  /* Nav */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(15,15,15,0.9);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 2rem;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  nav .logo { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--accent); text-decoration: none; }
+  nav .nav-links { display: flex; gap: 2rem; }
+  nav .nav-links a {
+    color: var(--muted); text-decoration: none; font-size: 0.85rem;
+    text-transform: uppercase; letter-spacing: 0.1em; transition: color 0.3s;
+  }
+  nav .nav-links a:hover { color: var(--accent); }
+  .menu-toggle { display: none; background: none; border: none; color: var(--text); font-size: 1.5rem; cursor: pointer; }
+
+  /* Hero */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    background: linear-gradient(180deg, #1a1a1a 0%, #0f0f0f 100%);
+    position: relative;
+  }
+  .hero::after {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 100px;
+    background: linear-gradient(to top, var(--bg), transparent);
+  }
+  .hero h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); margin-bottom: 1rem; line-height: 1.1; }
+  .hero h1 span { color: var(--accent); }
+  .hero p { font-size: 1.1rem; color: var(--muted); max-width: 500px; margin-bottom: 2rem; }
+  .btn {
+    display: inline-block;
+    padding: 0.9rem 2.2rem;
+    background: var(--accent);
+    color: #0f0f0f;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border-radius: 4px;
+    transition: background 0.3s, transform 0.2s;
+  }
+  .btn:hover { background: var(--accent-hover); transform: translateY(-2px); }
+  .btn-outline {
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    margin-left: 1rem;
+  }
+  .btn-outline:hover { background: rgba(200,169,126,0.1); }
+
+  /* Sections */
+  section { padding: 5rem 2rem; max-width: 1100px; margin: 0 auto; }
+  .section-title {
+    font-size: 2rem; margin-bottom: 0.5rem;
+    text-align: center;
+  }
+  .section-subtitle {
+    text-align: center; color: var(--muted); margin-bottom: 3rem;
+    font-size: 0.95rem;
+  }
+
+  /* About */
+  .about-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;
+  }
+  .about-grid img {
+    width: 100%; border-radius: 8px;
+    aspect-ratio: 4/3; object-fit: cover;
+    background: var(--surface);
+  }
+  .about-text h3 { font-size: 1.5rem; margin-bottom: 1rem; }
+  .about-text p { color: var(--muted); margin-bottom: 1rem; }
+
+  /* Menu */
+  .menu-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;
+  }
+  .menu-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    transition: border-color 0.3s;
+  }
+  .menu-card:hover { border-color: var(--accent); }
+  .menu-card h4 { font-family: 'Playfair Display', serif; font-size: 1.1rem; margin-bottom: 0.3rem; }
+  .menu-card .price { color: var(--accent); font-weight: 600; font-size: 0.95rem; }
+  .menu-card p { color: var(--muted); font-size: 0.85rem; margin-top: 0.5rem; }
+  .menu-category { margin-bottom: 2rem; }
+  .menu-category h3 {
+    font-size: 1.3rem; color: var(--accent);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.5rem; margin-bottom: 1rem;
+  }
+
+  /* Location */
+  .location-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;
+  }
+  .location-info h4 { font-size: 1.1rem; margin-bottom: 0.5rem; }
+  .location-info p { color: var(--muted); font-size: 0.9rem; margin-bottom: 1rem; }
+  .location-info .hours { background: var(--surface); padding: 1rem; border-radius: 8px; border: 1px solid var(--border); }
+  .location-info .hours h4 { color: var(--accent); }
+  .map-placeholder {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    aspect-ratio: 16/10;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--muted); font-size: 0.9rem;
+  }
+
+  /* Contact */
+  .contact-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; text-align: center;
+  }
+  .contact-item {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 2rem 1.5rem;
+  }
+  .contact-item .icon { font-size: 2rem; margin-bottom: 0.8rem; }
+  .contact-item h4 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 0.3rem; }
+  .contact-item p, .contact-item a { color: var(--text); text-decoration: none; font-size: 0.95rem; }
+  .contact-item a:hover { color: var(--accent); }
+
+  /* Footer */
+  footer {
+    text-align: center; padding: 3rem 2rem; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.8rem;
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .about-grid, .location-grid { grid-template-columns: 1fr; }
+    nav .nav-links { display: none; }
+    .menu-toggle { display: block; }
+    .hero { padding: 5rem 1.5rem 3rem; }
+    .btn-outline { margin-left: 0; margin-top: 0.8rem; }
+    .hero .btn-group { display: flex; flex-direction: column; align-items: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav>
+  <a href="#" class="logo">Hygge</a>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#menu">Menu</a>
+    <a href="#location">Location</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <button class="menu-toggle" onclick="document.querySelector('.nav-links').style.display='flex';this.style.display='none'">☰</button>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <h1>Welcome to Hygge Cafe<br><span>Cozy. Warm. Delicious.</span></h1>
+  <p>A cozy neighborhood cafe serving artisan coffee, homemade pastries, and comfort food in the heart of Jakarta.</p>
+  <div class="btn-group">
+    <a href="#menu" class="btn">View Menu</a>
+    <a href="#contact" class="btn btn-outline">Visit Us</a>
+  </div>
+</section>
+
+<!-- About -->
+<section id="about">
+  <h2 class="section-title">About Us</h2>
+  <p class="section-subtitle">More than just a cafe — it's a feeling</p>
+  <div class="about-grid">
+    <div class="about-text">
+      <h3>Our Story</h3>
+      <p>Hygge Cafe was born from a simple idea: everyone deserves a warm, welcoming space to slow down and enjoy the moment. Inspired by the Danish concept of 'hygge' — finding joy in life's simple pleasures.</p>
+      <p>We source our beans from the best local roasters, bake our pastries fresh every morning, and create a space where you can work, catch up with friends, or just enjoy a quiet moment with a great cup of coffee.</p>
+    </div>
+    <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800&h=600&fit=crop" alt="Hygge Cafe" onerror="this.style.background='#1a1a1a';this.style.display='flex';this.style.alignItems='center';this.style.justifyContent='center';this.alt='Image coming soon'">
+  </div>
+</section>
+
+<!-- Menu -->
+<section id="menu">
+  <h2 class="section-title">Our Menu</h2>
+  <p class="section-subtitle">Freshly made with love, every day</p>
+  
+    <div class="menu-category">
+      <h3>☕ Coffee</h3>
+      <div class="menu-grid">
+        <div class="menu-card">
+          <h4>Signature Latte</h4>
+          <span class="price">Rp 38,000</span>
+          <p>Rich espresso with velvety steamed milk</p>
+        </div>
+        <div class="menu-card">
+          <h4>Cold Brew</h4>
+          <span class="price">Rp 35,000</span>
+          <p>Steeped 20 hours for a smooth, bold finish</p>
+        </div>
+        <div class="menu-card">
+          <h4>Manual Brew</h4>
+          <span class="price">Rp 42,000</span>
+          <p>V60, Chemex, or Aeropress — your choice</p>
+        </div>
+        <div class="menu-card">
+          <h4>Affogato</h4>
+          <span class="price">Rp 40,000</span>
+          <p>Espresso drowned in vanilla gelato</p>
+        </div>
+      </div>
+    </div>
+    <div class="menu-category">
+      <h3>🥐 Pastries & Bites</h3>
+      <div class="menu-grid">
+        <div class="menu-card">
+          <h4>Butter Croissant</h4>
+          <span class="price">Rp 28,000</span>
+          <p>Flaky, golden, baked fresh daily</p>
+        </div>
+        <div class="menu-card">
+          <h4>Banana Bread</h4>
+          <span class="price">Rp 25,000</span>
+          <p>Warm slice with a cup of butter</p>
+        </div>
+        <div class="menu-card">
+          <h4>Cinnamon Roll</h4>
+          <span class="price">Rp 32,000</span>
+          <p>Soft, gooey, with cream cheese glaze</p>
+        </div>
+      </div>
+    </div>
+    <div class="menu-category">
+      <h3>🍳 All-Day Brunch</h3>
+      <div class="menu-grid">
+        <div class="menu-card">
+          <h4>Eggs Benedict</h4>
+          <span class="price">Rp 55,000</span>
+          <p>Poached eggs on sourdough with hollandaise</p>
+        </div>
+        <div class="menu-card">
+          <h4>Avo Toast</h4>
+          <span class="price">Rp 48,000</span>
+          <p>Smashed avo, chili flakes, poached egg</p>
+        </div>
+        <div class="menu-card">
+          <h4>Nasi Goreng Hygge</h4>
+          <span class="price">Rp 52,000</span>
+          <p>Our signature fried rice with a fried egg</p>
+        </div>
+      </div>
+    </div>
+</section>
+
+<!-- Location -->
+<section id="location">
+  <h2 class="section-title">Find Us</h2>
+  <p class="section-subtitle">Drop by and say hi</p>
+  <div class="location-grid">
+    <div class="location-info">
+      <h4>📍 Address</h4>
+      <p>Jakarta, Indonesia
+(Exact address to be confirmed)</p>
+      <div class="hours">
+        <h4>🕐 Opening Hours</h4>
+        <p>Mon – Fri: 7:00 AM – 9:00 PM
+Sat – Sun: 8:00 AM – 10:00 PM</p>
+      </div>
+    </div>
+    <div class="map-placeholder">
+      🗺️ Map — https://maps.google.com/?q=Hygge+Cafe+Jakarta
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section id="contact">
+  <h2 class="section-title">Get In Touch</h2>
+  <p class="section-subtitle">We'd love to hear from you</p>
+  <div class="contact-grid">
+    <div class="contact-item">
+      <div class="icon">📱</div>
+      <h4>Phone / WhatsApp</h4>
+      <p><a href="https://wa.me/6281234567890">+62 812-3456-7890</a></p>
+    </div>
+    <div class="contact-item">
+      <div class="icon">📧</div>
+      <h4>Email</h4>
+      <p><a href="mailto:hello@hyggecafe.id">hello@hyggecafe.id</a></p>
+    </div>
+    <div class="contact-item">
+      <div class="icon">📸</div>
+      <h4>Instagram</h4>
+      <p><a href="https://instagram.com/hyggecafe" target="_blank">@hyggecafe</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <p>© 2026 Hygge Cafe. All rights reserved.</p>
+  <p style="margin-top:0.5rem">Website by <a href="https://arjism.com">arjism.com</a></p>
+</footer>
+
+</body>
+</html>
